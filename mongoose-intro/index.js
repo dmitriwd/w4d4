@@ -75,7 +75,7 @@ mongoose
       genre: 'Drama'
     });
   })
-  .then(() => {
+  .then(book => {
     console.log('This is our newly created book: ', book);
     return Book.find({ pages: 1000 });
   })
@@ -117,4 +117,5 @@ mongoose
   })
   .catch(error => {
     console.log('Oh no! Something unexpected has occurred! 😲', error);
+    return mongoose.disconnect();
   });
