@@ -9,7 +9,38 @@ const bookSchema = new mongoose.Schema({
   genre: String
 });
 
-const Book = mongoose.model('Book', bookSchema); // Creates a book collection
+// A more complex schema
+/*
+const complexBookSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  author: {
+    type: String,
+    maxLength: 50
+  },
+  pages: {
+    type: Number,
+    min: 150,
+    max: 1500
+  },
+  releaseDate: {
+    type: Date
+  },
+  isAvailable: {
+    type: Boolean,
+    default: true
+  },
+  genre: {
+    type: String,
+    enum: ['Drama', 'Spiritual', 'Romance', 'Manual']
+  }
+});
+*/
+
+const Book = mongoose.model('Book', bookSchema); // Creates a book collection; Tells Mongoose to use the bookSchema
 
 mongoose
   .connect('mongodb://localhost:27017/node-mongoose-introduction', {
@@ -62,6 +93,11 @@ mongoose
   })
   .then(updatedBook => {
     console.log('Newly updated book: ', updatedBook);
+    // return Book.findByIdAndDelete
+    return Book.findOneAndDelete({ isAvailable: false });
+  })
+  .then(deletedBook => {
+    console.log("The following book isn't available no more! ", deletedBook);
   })
   .catch(error => {
     console.log('Oh no! Something unexpected has occurred! 😲', error);
